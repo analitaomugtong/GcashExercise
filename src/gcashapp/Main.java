@@ -43,11 +43,14 @@ public class Main {
             int userId = auth.login(number, pin);
 
             if (userId != -1) {
-                System.out.println("\nWelcome to GCash!");
+                CashTransfer ct = new CashTransfer();
+
                 System.out.println("1 - Change PIN");
                 System.out.println("2 - Check Balance");
-                System.out.println("3 - Cash - In");
-                System.out.println("4 - Logout");
+                System.out.println("3 - Cash-In");
+                System.out.println("4 - Cash Transfer");
+                System.out.println("5 - Logout");
+
                 System.out.print("Choose option: ");
                 int option = sc.nextInt();
                 sc.nextLine();
@@ -67,7 +70,14 @@ public class Main {
                     Cashin ci = new Cashin();
                     ci.cashIn(userId, "Cash-In", amount);
                 }
+                else if(option == 4){
+                System.out.print("Enter receiver Mobile Number: ");
+                String recvNumber = sc.nextLine();
 
+                    System.out.print("Enter amount to transfer: ");
+                    double amt = sc.nextDouble();
+                ct.cashTransferByNumber(userId, recvNumber, amt);
+}
                 auth.logout();
             }
         }
