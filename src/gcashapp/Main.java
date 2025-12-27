@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         UserAuthentication auth = new UserAuthentication();
+        CheckBalance cb = new CheckBalance();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("===== GCASH USER AUTHENTICATION SYSTEM =====");
@@ -14,7 +15,7 @@ public class Main {
         System.out.println("2 - Login");
         System.out.print("Choose option: ");
         int choice = sc.nextInt();
-        sc.nextLine(); // clear buffer
+        sc.nextLine();
 
         if (choice == 1) {
             System.out.print("Name: ");
@@ -44,7 +45,8 @@ public class Main {
             if (userId != -1) {
                 System.out.println("\nWelcome to GCash!");
                 System.out.println("1 - Change PIN");
-                System.out.println("2 - Logout");
+                System.out.println("2 - Check Balance");
+                System.out.println("3 - Logout");
                 System.out.print("Choose option: ");
                 int option = sc.nextInt();
                 sc.nextLine();
@@ -53,6 +55,10 @@ public class Main {
                     System.out.print("Enter new 4-digit PIN: ");
                     String newPin = sc.nextLine();
                     auth.changePin(userId, newPin);
+                }
+                else if (option == 2) {
+                    double bal = cb.getBalance(userId);
+                    System.out.println("Your current balance is: ₱" + bal);
                 }
 
                 auth.logout();
