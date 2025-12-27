@@ -45,11 +45,14 @@ public class Main {
             if (userId != -1) {
                 CashTransfer ct = new CashTransfer();
 
-                System.out.println("1 - Change PIN");
-                System.out.println("2 - Check Balance");
-                System.out.println("3 - Cash-In");
-                System.out.println("4 - Cash Transfer");
-                System.out.println("5 - Logout");
+                Transactions trans = new Transactions();
+
+System.out.println("1 - Change PIN");
+System.out.println("2 - Check Balance");
+System.out.println("3 - Cash-In");
+System.out.println("4 - Cash Transfer");
+System.out.println("5 - View My Transactions");
+System.out.println("6 - Logout");
 
                 System.out.print("Choose option: ");
                 int option = sc.nextInt();
@@ -77,6 +80,9 @@ public class Main {
                     System.out.print("Enter amount to transfer: ");
                     double amt = sc.nextDouble();
                 ct.cashTransferByNumber(userId, recvNumber, amt);
+}
+else if(option == 5){
+    trans.viewUserAll(userId);
 }
                 auth.logout();
             }
