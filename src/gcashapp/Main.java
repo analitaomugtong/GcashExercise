@@ -46,7 +46,8 @@ public class Main {
                 System.out.println("\nWelcome to GCash!");
                 System.out.println("1 - Change PIN");
                 System.out.println("2 - Check Balance");
-                System.out.println("3 - Logout");
+                System.out.println("3 - Cash - In");
+                System.out.println("4 - Logout");
                 System.out.print("Choose option: ");
                 int option = sc.nextInt();
                 sc.nextLine();
@@ -59,6 +60,12 @@ public class Main {
                 else if (option == 2) {
                     double bal = cb.getBalance(userId);
                     System.out.println("Your current balance is: ₱" + bal);
+                }
+                else if(option == 3) {
+                    System.out.println("Enter amount to cash-in: ");
+                    double amount = sc.nextDouble();
+                    Cashin ci = new Cashin();
+                    ci.cashIn(userId, "Cash-In", amount);
                 }
 
                 auth.logout();
