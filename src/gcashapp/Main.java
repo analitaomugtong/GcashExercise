@@ -8,90 +8,113 @@ public class Main {
 
         UserAuthentication auth = new UserAuthentication();
         CheckBalance cb = new CheckBalance();
+        Cashin cashin = new Cashin();
+        CashTransfer ct = new CashTransfer();
+        Transactions trans = new Transactions();
+
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("===== GCASH USER AUTHENTICATION SYSTEM =====");
-        System.out.println("1 - Register");
-        System.out.println("2 - Login");
-        System.out.print("Choose option: ");
-        int choice = sc.nextInt();
-        sc.nextLine();
+        int userId = -1;
+        String userNumber = "";
 
-        if (choice == 1) {
-            System.out.print("Name: ");
-            String name = sc.nextLine();
+        while (true) {
+            System.out.println("\n===== GCASH APP =====");
+            System.out.println("1 - Register");
+            System.out.println("2 - Login");
+            System.out.println("3 - Exit");
+            System.out.print("Choose option: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
 
-            System.out.print("Email: ");
-            String email = sc.nextLine();
+            if (choice == 1) {
+                System.out.print("Name: ");
+                String name = sc.nextLine();
+                System.out.print("Email: ");
+                String email = sc.nextLine();
+                System.out.print("Mobile Number: ");
+                String number = sc.nextLine();
+                System.out.print("4-digit PIN: ");
+                String pin = sc.nextLine();
+                auth.register(name, email, number, pin);
+            }
 
-            System.out.print("Mobile Number: ");
-            String number = sc.nextLine();
+            else if (choice == 2) {
+                System.out.print("Mobile Number: ");
+                userNumber = sc.nextLine();
+                System.out.print("PIN: ");
+                String pin = sc.nextLine();
 
-            System.out.print("4-digit PIN: ");
-            String pin = sc.nextLine();
+                userId = auth.login(userNumber, pin);
 
-            auth.register(name, email, number, pin);
-        }
+                if (userId == -1) continue;
 
-        else if (choice == 2) {
-            System.out.print("Mobile Number: ");
-            String number = sc.nextLine();
+                boolean loggedIn = true;
 
-            System.out.print("PIN: ");
-            String pin = sc.nextLine();
+                while (loggedIn) {
+                    System.out.println("\n===== MAIN MENU =====");
+                    System.out.println("1 - Check Balance");
+                    System.out.println("2 - Cash-In");
+                    System.out.println("3 - Cash Transfer");
+                    System.out.println("4 - View My Transactions");
+                    System.out.println("5 - Logout");
+                    System.out.print("Choose option: ");
+                    int opt = sc.nextInt();
+                    sc.nextLine();
 
-            int userId = auth.login(number, pin);
+                    switch (opt) {
+                        case 1:
+                            System.out.println("Balance: ₱" + cb.getBalance(userId));
+                            break;
 
-            if (userId != -1) {
-                CashTransfer ct = new CashTransfer();
+                        case 2:
+                            System.out.print("Enter cash-in amount: ");
+                            double inAmt = sc.nextDouble();
+                            sc.nextLine();
+                            cashin.cashIn(userId, "Cash-In", inAmt);
+                            break;
 
-                Transactions trans = new Transactions();
+                        case 3:
+                            System.out.print("Enter receiver mobile number: ");
+                            String recvNum = sc.nextLine();
+                            System.out.print("Enter amount to transfer: ");
+                            double tAmt = sc.nextDouble();
+                            sc.nextLine();
+                            ct.cashTransferByNumber(userId, recvNum, tAmt);
+                            break;
 
-System.out.println("1 - Change PIN");
-System.out.println("2 - Check Balance");
-System.out.println("3 - Cash-In");
-System.out.println("4 - Cash Transfer");
-System.out.println("5 - View My Transactions");
-System.out.println("6 - Logout");
+                        case 4:
+                            trans.viewUserAllByNumber(userNumber);
+                            break;
 
-                System.out.print("Choose option: ");
-                int option = sc.nextInt();
-                sc.nextLine();
+                        case 5:
+                            auth.logout();
+                            loggedIn = false;
+                            break;
 
-                if (option == 1) {
-                    System.out.print("Enter new 4-digit PIN: ");
-                    String newPin = sc.nextLine();
-                    auth.changePin(userId, newPin);
+                        default:
+                            System.out.println("Invalid choice!");
+                    }
+
+                    if (loggedIn) {
+                        System.out.print("\nAnother transaction? (Y/N): ");
+                        String again = sc.nextLine();
+                        if (!again.equalsIgnoreCase("Y")) {
+                            auth.logout();
+                            loggedIn = false;
+                        }
+                    }
                 }
-                else if (option == 2) {
-                    double bal = cb.getBalance(userId);
-                    System.out.println("Your current balance is: ₱" + bal);
-                }
-                else if(option == 3) {
-                    System.out.println("Enter amount to cash-in: ");
-                    double amount = sc.nextDouble();
-                    Cashin ci = new Cashin();
-                    ci.cashIn(userId, "Cash-In", amount);
-                }
-                else if(option == 4){
-                System.out.print("Enter receiver Mobile Number: ");
-                String recvNumber = sc.nextLine();
+            }
 
-                    System.out.print("Enter amount to transfer: ");
-                    double amt = sc.nextDouble();
-                ct.cashTransferByNumber(userId, recvNumber, amt);
-}
-else if(option == 5){
-    trans.viewUserAll(userId);
-}
-                auth.logout();
+            else if (choice == 3) {
+                System.out.println("Thank you for using GCash!");
+                sc.close();
+                break;
+            }
+
+            else {
+                System.out.println("Invalid choice!");
             }
         }
-
-        else {
-            System.out.println("Invalid menu choice!");
-        }
-
-        sc.close();
     }
 }
